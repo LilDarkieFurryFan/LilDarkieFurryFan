@@ -1,0 +1,30 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local target = nil
+
+local function aimAtTarget()
+    if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
+        local humanoidRootPart = target.Character.HumanoidRootPart
+        local camera = workspace.CurrentCamera
+
+        local rootPosition = humanoidRootPart.Position
+        local screenPosition = camera:WorldToScreenPoint(rootPosition)
+
+        -- Adjust the aim direction based on the screen position
+        -- and control the camera to aim at the target
+        -- (Code for camera manipulation not provided here)
+    end
+end
+
+-- Detect the target player to aim at
+game:GetService("RunService").RenderStepped:Connect(function()
+    local localPlayer = Players.LocalPlayer
+    if localPlayer and localPlayer.Character then
+        local mouse = localPlayer:GetMouse()
+        target = mouse.Target and mouse.Target.Parent:IsA("Model") and Players:GetPlayerFromCharacter(mouse.Target.Parent)
+    end
+end)
+
+-- Call the aimAtTarget function continuously
+RunService.Heartbeat:Connect(aimAtTarget)
